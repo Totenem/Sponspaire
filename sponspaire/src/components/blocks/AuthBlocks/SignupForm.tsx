@@ -44,16 +44,16 @@ const SignupForm = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [selectedPlan, setSelectedPlan] = useState<'free' | 'pro'>('free');
+  // const [selectedPlan, setSelectedPlan] = useState<'free' | 'pro'>('free');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const storingData = async (firstName: string, lastName: string, email: string, plan: string) => {
+  const storingData = async (firstName: string, lastName: string, email: string) => {
     const { data, error } = await supabase.from('users').insert({
       first_name: firstName,
       last_name: lastName,
       email,
-      plan_type: plan,
+      plan_type: 'free',
     })
 
     if (error) {
@@ -92,7 +92,7 @@ const SignupForm = ({
 
       if (data && data.user) {
         
-        const dataStored = await storingData(firstName, lastName, email, selectedPlan);
+        const dataStored = await storingData(firstName, lastName, email);
         
         if (dataStored) {
           router.push('/dashboard');
@@ -166,7 +166,7 @@ const SignupForm = ({
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          {/* Plan Selection Card */}
+          {/* Plan Selection Card
           <div className="w-full space-y-3">
             <h3 className="text-sm font-medium text-muted-foreground">Choose your plan</h3>
             <div className="grid grid-cols-2 gap-2">
@@ -193,7 +193,7 @@ const SignupForm = ({
                 <div className="text-xs text-muted-foreground">Unlimited + 24/7 support</div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <Button type="submit" className="w-full" onClick={handleSignup} disabled={isLoading}>
