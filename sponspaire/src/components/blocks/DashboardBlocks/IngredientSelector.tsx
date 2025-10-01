@@ -64,7 +64,8 @@ export function IngredientSelector({ onGenerateRecipe }: IngredientSelectorProps
       diet: selectedDiet,
       vibe: selectedVibe,
       country: selectedCountry
-    })
+    }
+  )
   }
 
   return (

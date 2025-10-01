@@ -1,6 +1,8 @@
 "use client"
 import { IngredientSelector } from "@/components/blocks/DashboardBlocks/IngredientSelector"
 import { RecipeDisplay } from "@/components/blocks/DashboardBlocks/RecipeDisplay"
+import { Recipe } from "@/components/blocks/DashboardBlocks/RecipeDisplay"
+import { useState } from "react"
 
 const fakeRecipe = {
   title: "Savory Spinach Pancakes",
@@ -36,15 +38,27 @@ const fakeRecipe = {
 }
 
 export default function DashboardPage() {
-  const handleGenerateRecipe = (selections: {
+  const [recipe, setRecipe] = useState<Recipe | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState(false)
+  const handleGenerateRecipe = (
+    selections: {
     ingredients: string[]
     diet: string
     vibe: string
     country: string
-  }) => {
-    console.log("Generating recipe with selections:", selections)
-    // Here you would typically call an API to generate a recipe
-    // For now, we'll just log the selections
+  }
+) => {
+    setIsLoading(true)
+    setRecipe(undefined)
+    fetch("/api/recipe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(selections)
+    })
+    .then(response => response.json())
+    .then(data => setRecipe(data))
+    .catch(error => console.error("Error:", error))
+    .finally(() => setIsLoading(false))
   }
 
   return (
@@ -57,17 +71,26 @@ export default function DashboardPage() {
           <p className="text-muted-foreground">Your AI Recipe Generator</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Panel - Input Section */}
-          <div>
+        {!recipe ? (
+          <div className="max-w-2xl mx-auto">
             <IngredientSelector onGenerateRecipe={handleGenerateRecipe} />
+            {isLoading && (
+              <div className="mt-6 text-center text-sm text-muted-foreground">Generating recipe…</div>
+            )}
           </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left Panel - Input Section */}
+            <div>
+              <IngredientSelector onGenerateRecipe={handleGenerateRecipe} />
+            </div>
 
-          {/* Right Panel - Recipe Display */}
-          <div>
-            <RecipeDisplay recipe={fakeRecipe} />
+            {/* Right Panel - Recipe Display */}
+            <div>
+              <RecipeDisplay recipe={recipe} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
