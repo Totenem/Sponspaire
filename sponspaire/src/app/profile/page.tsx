@@ -56,7 +56,7 @@ export default function ProfilePage() {
           <p className="text-muted-foreground">Manage your account information</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8">
           {/* Personal Information */}
           <Card>
             <CardHeader>
@@ -90,67 +90,6 @@ export default function ProfilePage() {
               <Button variant="outline" className="w-full">
                 Edit Profile
               </Button>
-            </CardContent>
-          </Card>
-
-          {/* Subscription & Credits */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Subscription & Credits</CardTitle>
-              <CardDescription>
-                Your current plan and usage
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Subscription Status */}
-              <div className="flex items-center justify-between">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Subscription Plan</label>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Badge 
-                      variant={mock_user_data.subscription_type === "PRO" ? "default" : "secondary"}
-                      className="text-sm"
-                    >
-                      {mock_user_data.subscription_type}
-                    </Badge>
-                    {mock_user_data.subscription_type === "FREE" && (
-                      <Button size="sm" variant="outline">
-                        Upgrade to PRO
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Credits Display */}
-              <div className="bg-muted/50 p-4 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold">Credits Remaining</h3>
-                    <p className="text-2xl font-bold text-primary">{mock_user_data.credits_remaining}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {mock_user_data.subscription_type === "FREE" 
-                        ? "Each recipe generation uses 1 credit" 
-                        : "Unlimited recipe generations"
-                      }
-                    </p>
-                  </div>
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">⚡</span>
-                  </div>
-                </div>
-              </div>
-
-              {mock_user_data.subscription_type === "FREE" && (
-                <div className="space-y-2">
-                  <Button className="w-full">
-                    Buy More Credits
-                  </Button>
-                  <Button variant="outline" className="w-full">
-                    Upgrade to PRO
-                  </Button>
-                </div>
-              )}
             </CardContent>
           </Card>
         </div>

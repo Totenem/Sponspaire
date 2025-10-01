@@ -17,7 +17,7 @@ interface NavigationBarProps {
   className?: string;
 }
 
-const NavigationBar: React.FC<NavigationBarProps> = ({ className = '' }) => {
+export const NavigationBar: React.FC<NavigationBarProps> = ({ className = '' }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
   const supabase = createClient();
